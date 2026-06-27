@@ -1,8 +1,24 @@
-# this is test to make sure vs code and python working correctly
+# ─────────────────────────────────────────
+# main.py - Temporary test
+# Testing that config.py loads keys correctly
+# ─────────────────────────────────────────
 
-print("SOC assistant is set up successfully")
+from src.config import VIRUSTOTAL_KEY, ABUSEIPDB_KEY, GEMINI_KEY
 
-print("VS code is working correctly with Python")  
+# Check each key was loaded — print Found or Missing
+# We never print the actual key for security reasons
 
-print ("Python is working correctly with VS code")
+if VIRUSTOTAL_KEY:
+    print("✅ VirusTotal key loaded successfully")
+else:
+    print("❌ VirusTotal key is MISSING — check your .env file")
 
+if ABUSEIPDB_KEY:
+    print("✅ AbuseIPDB key loaded successfully")
+else:
+    print("❌ AbuseIPDB key is MISSING — check your .env file")
+
+if GEMINI_KEY:
+    print("✅ Gemini key loaded successfully")
+else:
+    print("❌ Gemini key is MISSING — check your .env file")
