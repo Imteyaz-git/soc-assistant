@@ -1,0 +1,19 @@
+{
+  "alert_id": "ALT-2024-00142",
+  "timestamp": "2024-07-15T14:32:10Z",
+  "severity": "High",
+  "alert_type": "Outbound Connection to Known Malicious IP",
+  "source_ip": "192.168.1.105",
+  "destination_ip": "185.220.101.45",
+  "destination_url": "http://malware-delivery.ru/payload.exe",
+  "file_hash": "44d88612fea8a8f36de82e1278abb02f",
+  "hostname": "DESKTOP-HR-042",
+  "username": "ahmed.khalid",
+  "department": "Human Resources",
+  "description": "Workstation DESKTOP-HR-042 initiated an outbound TCP connection to IP 185.220.101.45 on port 443. This IP is associated with known Tor exit nodes and malware C2 infrastructure. A suspicious executable was also detected at the endpoint.",
+  "log_references": [
+    "FW-LOG-20240715-8821",
+    "EDR-LOG-20240715-3301",
+    "PROXY-LOG-20240715-1192"
+  ]
+}
