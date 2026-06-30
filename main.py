@@ -1,36 +1,44 @@
 # ─────────────────────────────────────────────────────────────
 # main.py
 # Entry point for the SOC Assistant.
-# Currently used to test the alert parser.
+# Currently testing: alert parser + VirusTotal integration.
 # ─────────────────────────────────────────────────────────────
 
-from src.alert_parser import parse_alert  # Import our parser function
+from src.alert_parser import parse_alert
+from src.virustotal import check_all_iocs
 
-# Path to our sample alert file
+# ── Step 1: Parse the alert and extract IOCs ──────────────────
 ALERT_PATH = "alerts/sample_alert_1.json"
-
-# Run the parser
 alert_data, iocs = parse_alert(ALERT_PATH)
 
-# Print the full alert details
 print("=" * 55)
-print("📋  FULL ALERT DATA")
+print("🔍  EXTRACTED IOCs — Sending to VirusTotal...")
 print("=" * 55)
-print(f"  Alert ID   : {alert_data['alert_id']}")
-print(f"  Timestamp  : {alert_data['timestamp']}")
-print(f"  Severity   : {alert_data['severity']}")
-print(f"  Type       : {alert_data['alert_type']}")
-print(f"  Source IP  : {alert_data['source_ip']}")
-print(f"  Host       : {alert_data['hostname']}")
-print(f"  User       : {alert_data['username']}")
-print(f"  Department : {alert_data['department']}")
+print(f"  IP   : {iocs['destination_ip']}")
+print(f"  URL  : {iocs['destination_url']}")
+print(f"  Hash : {iocs['file_hash']}")
 print()
 
-# Print just the extracted IOCs
+# ── Step 2: Send IOCs to VirusTotal ───────────────────────────
+vt_results = check_all_iocs(iocs)
+
+# ── Step 3: Print the results ─────────────────────────────────
 print("=" * 55)
-print("🔍  EXTRACTED IOCs")
+print("🛡️   VIRUSTOTAL RESULTS")
 print("=" * 55)
-print(f"  Destination IP  : {iocs['destination_ip']}")
-print(f"  Destination URL : {iocs['destination_url']}")
-print(f"  File Hash       : {iocs['file_hash']}")
+
+for key, result in vt_results.items():
+
+    print(f"\n  IOC Type  : {result['ioc_type'].upper()}")
+    print(f"  IOC Value : {result['ioc_value']}")
+
+    if result["error"]:
+        print(f"  ⚠️  Error  : {result['error']}")
+    else:
+        print(f"  🔴 Malicious  : {result['malicious']}")
+        print(f"  🟡 Suspicious : {result['suspicious']}")
+        print(f"  🟢 Harmless   : {result['harmless']}")
+        print(f"  ⚪ Undetected : {result['undetected']}")
+
+print()
 print("=" * 55)
